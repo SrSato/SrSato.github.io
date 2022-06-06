@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body{
+            background-image: url(mario3/sueloBald.png), url(mario3/paredRosa.png);
+            background-repeat:  repeat-x, repeat;
+            background-attachment: fixed;
+            background-position: left bottom,right bottom;    
+        }
+        #mario{
+            background-image: url(mario3/mqd.png);
+            position: fixed;
+            bottom:30px;
+            left: 0px;
+            width: 14px;
+            height: 27px;
+        }
+        #champi{
+            background-image: url(mario3/goomba1.gif);
+            position: fixed;
+            bottom:30px;
+            right: 0px;
+            width: 16px;
+            height: 16px;
+        }        
+    </style>
+    
+</head>
+<body id ="body" onkeydown="moverse()" onkeyup="parada()">
+    <h1 onclick="colorea(this)">SERA BROS!</h1>
+    <div id="mario" >
+
+    </div>
+    <div id="champi">
+
+    </div>
+    <script>
+        let mario_mira = "dcha"; 
+        let mario_mueve="no";
+        let mario_hace="no";
+        let champichof = 60;
+        const suelo = mario.offsetTop;
+
+        function moverse(){
+            let mario = document.getElementById("mario");
+            let tecla = event.key;
+            switch (tecla) {
+                case "ArrowLeft":
+                    mario_mira = "izda";
+                    mario_mueve = "izda";                    
+                    break;
+                case "ArrowRight":  
+                    mario_mira ="dcha"; 
+                    mario_mueve = "dcha";                    
+                    break;
+                case " ":
+                    if(mario_hace!="salto"){
+                        mario_hace = "salto"; 
+                        cont_salto =25;                   
+                    }            
+                    break;                
+            }
+        }
+
+        function parada(){
+            let mario = document.getElementById("mario");
+            let tecla = event.key;
+            
+            switch (tecla) {            
+                case "ArrowLeft":
+                    mario_mira = "izda";
+                    mario_mueve = "no";                
+                    break;
+                case "ArrowRight":   
+                    mario_mira = "dcha";
+                    mario_mueve = "no";                    
+                    break;
+            
+            /*default:  
+                    alert(tecla.toString());          */
+            }
+        }
+
+        function choca(a, b) {
+            var aRect = a.getBoundingClientRect();
+            var bRect = b.getBoundingClientRect();
+
+            return !(
+                ((aRect.top + aRect.height) < (bRect.top)) ||
+                (aRect.top > (bRect.top + bRect.height)) ||
+                ((aRect.left + aRect.width) < bRect.left) ||
+                (aRect.left > (bRect.left + bRect.width))
+            );
+        }
+
+        function repinte(){
+
+
+            switch(mario_mira){
+                case "izda":
+                    mario.style.width='14px';
+                    mario.style.backgroundImage = 'url("mario3/mqi.png")';
+                    break;
+                case "dcha":
+                    mario.style.width='14px';
+                    mario.style.backgroundImage = 'url("mario3/mqd.png")';
+                    break;
+            }
+            switch(mario_mueve){
+                case "izda":
+                    mario.style.width='16px';
+                    mario.style.backgroundImage = 'url("mario3/mi.gif")';                                        
+                    mario.style.left = mario.offsetLeft - 1 +"px";
+                    break;
+                case "dcha":
+                    mario.style.width='16px'; 
+                    mario.style.backgroundImage = 'url("mario3/md.gif")';
+                    mario.style.left = mario.offsetLeft + 1 +"px";
+                    break;            
+            }
+
+            switch(mario_hace){
+                case "salto":
+                    mario.style.width='16px';
+                    if (mario_mira == "dcha"){
+                        mario.style.backgroundImage = 'url("mario3/mad2.png")';
+                    }else{
+                        mario.style.backgroundImage = 'url("mario3/mai2.png")';
+                    }
+                    if (cont_salto>0 ){                    
+                        mario.style.top = mario.offsetTop - 3 +"px";                   
+                        cont_salto --;
+                    } else {
+                        mario.style.top = mario.offsetTop + 3 +"px";                   
+                        cont_salto --;                      
+                    }
+                    if(mario.offsetTop >= window.innerHeight - 57){
+                        mario_hace="no";
+                    }                   
+                    break;
+                case "no":
+                    mario.offsetTop = window.innerHeight - 57;
+                    break;
+            }
+            //-------------------------------------AUTOMATISMOS------------------------------------------------------------
+
+            // Motor de los champis (goombas): los mueve automáticamente y los vuelve a sacar cuando los pisan o se escapan de la pantalla
+            champi.style.left = champi.offsetLeft -1 + "px";            
+            if(champi.offsetLeft<=0 || champi.style.display=="none" ){
+                champi.style.backgroundImage = 'url("mario3/goomba1.gif")';
+                champi.style.left = screen.width + "px";
+                champi.style.display="block";
+            }
+
+            // Contador para que se vea la animación del pisotón. Lo enseña pisado 5 "frames"
+            if(champichof<=0){
+                champi.style.display = "none";  
+                champichof = 6;              
+            }else if (champichof <= 5) {
+                champichof--;
+            }
+
+            //Mario choca con un champi?
+            if(choca(mario,champi)){
+                if (mario_hace="salto") { 
+                    champi.style.backgroundImage = 'url("mario3/goombachof.png")';
+                    champichof = 5;
+                    cont_salto = 25;                    
+                }
+            }
+            setTimeout(repinte, 10); //repintamos cada 10ms (es la misma idea que en un "frame" de videojuego ;)
+        }
+
+        function colorea(elem){
+            if(elem.style.color!="red"){
+                elem.style.color="red";
+            }else{
+                elem.style.color="green";
+            }            
+        }
+        repinte();
+    </script>
+</body>
+</html>
