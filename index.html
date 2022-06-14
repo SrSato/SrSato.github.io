@@ -6,6 +6,39 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <style>
+        @font-face {
+            font-family: plumbers;
+            src: url(mario3/SuperPlumberBrothers-y00V.ttf);
+        }
+
+        @font-face {
+            font-family: mario256;
+            src: url(mario3/SuperMario256.ttf);
+        }
+
+        h1{
+            font-family: mario256;   
+            font-size: 90px; 
+            margin-left: 25px;
+            color: blue;
+            text-shadow: -2px 0 black, 0 2px black, 2px 0 black, 0 -2px black,  5px 5px black;
+        }
+
+        h1 span:nth-child(4n + 0){
+            color:green;
+        }
+        h1 span:nth-child(4n - 1){
+            color:blue;
+        }
+        h1 span:nth-child(4n - 2){
+            color:yellow;
+        }
+        h1 span:nth-child(4n - 3){
+            color:red;
+        }
+       
+        
+
         body{
             background-image: url(mario3/sueloBald.png), url(mario3/paredRosa.png);
             background-repeat:  repeat-x, repeat;
@@ -32,7 +65,15 @@
     
 </head>
 <body id ="body" onkeydown="moverse()" onkeyup="parada()">
-    <h1 onclick="colorea(this)">SERA BROS!</h1>
+    <h1 id ="h1" onclick="colorea(this)">Sr SATO</h1>
+    <script>
+        const frase = document.getElementById("h1").innerHTML;
+        let res = "";
+        for(letra of frase){
+            res += `<span>${letra}</span>`;
+        }
+        document.getElementById("h1").innerHTML  = res;
+    </script>
     <div id="mario" >
 
     </div>
