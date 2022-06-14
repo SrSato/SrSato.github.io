@@ -65,7 +65,7 @@
     
 </head>
 <body id ="body" onkeydown="moverse()" onkeyup="parada()">
-    <h1 id ="h1" onclick="colorea(this)">Sr SATO</h1>
+    <h1 id ="h1">Sr SATO</h1>
     <script>
         const frase = document.getElementById("h1").innerHTML;
         let res = "";
@@ -217,13 +217,6 @@
             setTimeout(repinte, 10); //repintamos cada 10ms (es la misma idea que en un "frame" de videojuego ;)
         }
 
-        function colorea(elem){
-            if(elem.style.color!="red"){
-                elem.style.color="red";
-            }else{
-                elem.style.color="green";
-            }            
-        }
         repinte();
     </script>
 </body>
